@@ -211,27 +211,21 @@
             "in": "query",
             "description": "Username of the User",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "password",
             "in": "query",
             "description": "password of the User",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "email",
             "in": "query",
             "description": "email of the User",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -244,7 +238,42 @@
         }
       }
     },
-    "/user/{userid}/follower": {
+    "/usrs/forgotpassword": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "in case user forgot password",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of the User",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "email of the User",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userid}/follower": {
       "get": {
         "tags": [
           "User"
@@ -272,7 +301,7 @@
         }
       }
     },
-    "/user/{userid}/following": {
+    "/users/{userid}/following": {
       "get": {
         "tags": [
           "User"
@@ -300,7 +329,7 @@
         }
       }
     },
-    "/user/login": {
+    "/users/login": {
       "post": {
         "tags": [
           "User"
@@ -314,18 +343,14 @@
             "in": "query",
             "description": "The user name for login",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "password",
             "in": "query",
             "description": "The password for login in clear text",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -338,7 +363,7 @@
         }
       }
     },
-    "/user/logout": {
+    "/users/logout": {
       "get": {
         "tags": [
           "User"
@@ -391,41 +416,31 @@
             "name": "username",
             "in": "query",
             "description": "User object that needs to be updated",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "password",
             "in": "query",
             "description": "User object that needs to be updated",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "about",
             "in": "query",
             "description": "User object that needs to be updated",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "emailid",
             "in": "query",
             "description": "User object that needs to be updated",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "imageurl",
             "in": "query",
             "description": "User object that needs to be updated",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -434,17 +449,6 @@
             "schema": {
               "$ref": "#/definitions/User"
             }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Delete user account by user ID",
-        "responses": {
-          "204": {
-            "description": "User account deleted successfully"
           }
         }
       }
@@ -481,27 +485,21 @@
             "name": "body",
             "description": "Question object that needs to be created",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "in": "query",
             "name": "title",
             "description": "Question object that needs to be created",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "in": "query",
             "name": "tags",
             "description": "Question object that needs to be created",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -534,50 +532,28 @@
         "summary": "Get details of a specific question by ID",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "get details of questions"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "Questions"
-        ],
-        "summary": "Update an existing question",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "body",
-            "description": "Question object that needs to be created",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "title",
-            "description": "Question object that needs to be created",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "tags",
-            "description": "Question object that needs to be created",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
+      }
+    },
+    "/users/{userid}/questions/{questionId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "questionId",
+          "description": "ID of question to get details for",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "userid",
+          "description": "ID of userid",
+          "required": true,
+          "type": "integer"
         }
-      },
+      ],
       "delete": {
         "tags": [
           "Questions"
@@ -622,7 +598,25 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/users/{userid}/questions/{questionId}/answers": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "questionId",
+          "description": "ID of question to get answers for",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "userid",
+          "description": "ID of userid",
+          "required": true,
+          "type": "integer"
+        }
+      ],
       "post": {
         "tags": [
           "Answers"
@@ -633,9 +627,7 @@
             "in": "query",
             "name": "body",
             "description": "Question object that needs to be created",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -678,31 +670,32 @@
             }
           }
         }
-      },
-      "put": {
-        "tags": [
-          "Answers"
-        ],
-        "summary": "Update an existing answer to a specific question",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "body",
-            "description": "update answer to that question",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Answer updated successfully",
-            "schema": {
-              "$ref": "#/definitions/Answer"
-            }
-          }
+      }
+    },
+    "/user/{userid}/questions/{questionId}/answers/{answerId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "questionId",
+          "description": "ID of question to get answer for",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "answerId",
+          "description": "ID of answer to get details for",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "userid",
+          "description": "ID of userid",
+          "required": true,
+          "type": "integer"
         }
-      },
+      ],
       "delete": {
         "tags": [
           "Answers"
@@ -715,12 +708,19 @@
         }
       }
     },
-    "/questions/{questionId}/comments": {
+    "/user/{userid}/questions/{questionId}/comments": {
       "parameters": [
         {
           "in": "path",
           "name": "questionId",
           "description": "ID of the question to comment on",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "userid",
+          "description": "ID of the user",
           "required": true,
           "type": "integer"
         }
@@ -770,29 +770,32 @@
             }
           }
         }
-      },
-      "put": {
-        "tags": [
-          "Comments"
-        ],
-        "summary": "Update a comment by comment ID",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Comment object that needs to be updated",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
+      }
+    },
+    "/user/{userid}/questions/{questionId}/comments/{commentId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "questionId",
+          "description": "ID of the question to comment on",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "userid",
+          "description": "ID of the user",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "commentId",
+          "description": "ID of the user",
+          "required": true,
+          "type": "integer"
         }
-      },
+      ],
       "delete": {
         "tags": [
           "Comments"
@@ -868,7 +871,7 @@
         "tags": [
           "Comments"
         ],
-        "summary": "Get all comments on an answer",
+        "summary": "Get a particular comment on an answer",
         "produces": [
           "application/json"
         ],
@@ -880,30 +883,39 @@
             "description": "OK"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "Comments"
-        ],
-        "summary": "Update a comment by comment ID",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "body",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "$ref": "#/definitions/Comment"
-            },
-            "description": "OK"
-          }
+      }
+    },
+    "/user/{userid}//questions/{questionId}/answers/{answerId}/comments/{commentId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "userid",
+          "description": "ID of question to get answer for",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "questionId",
+          "description": "ID of question to get answer for",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "answerId",
+          "description": "ID of answer to get details for",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "in": "path",
+          "name": "commentId",
+          "description": "ID of the comment to get details for",
+          "required": true,
+          "type": "integer"
         }
-      },
+      ],
       "delete": {
         "tags": [
           "Comments"
@@ -1005,6 +1017,83 @@
           },
           "400": {
             "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/{userid}/questions/{questionId}/vote/{vote_type}": {
+      "post": {
+        "tags": [
+          "vote"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vote_type",
+            "description": "vote a question",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "questionId",
+            "description": "ID of question to get details for",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "userid",
+            "description": "ID of userid",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully voted"
+          }
+        }
+      }
+    },
+    "/users/{userid}/questions/{questionId}/answers/{answerId}/vote/{vote_type}": {
+      "post": {
+        "tags": [
+          "vote"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vote_type",
+            "description": "vote a question",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "questionId",
+            "description": "ID of question to get details for",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "answerId",
+            "description": "ID of question to get details for",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "userid",
+            "description": "ID of userid",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully voted"
           }
         }
       }
