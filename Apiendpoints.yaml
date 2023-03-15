@@ -263,7 +263,7 @@ paths:
       tags:
         - User
       summary: Logs out current logged in user session
-      description: ''
+      description: ""
       operationId: logoutUser
       parameters: []
       responses:
@@ -318,14 +318,6 @@ paths:
           description: "User updated successfully"
           schema:
             $ref: "#/definitions/User"
-    delete:
-      tags:
-        - User
-      summary: "Delete user account by user ID"
-      responses:
-        204:
-          description: "User account deleted successfully"
-
 # User api endpoints
   /questions:
     get:
@@ -383,30 +375,19 @@ paths:
       summary: Get details of a specific question by ID
       responses:
         200:
-          description: OK
-    put:
-      tags: 
-        - Questions
-      summary: Update an existing question
-      parameters:
-        - in: query 
-          name: body
-          description: Question object that needs to be created
-          required: false
-          type: string
-        - in: query 
-          name: title
-          description: Question object that needs to be created
-          required: false
-          type: string
-        - in: query 
-          name: tags
-          description: Question object that needs to be created
-          required: false
-          type: string
-      responses:
-        200:
-          description: OK
+          description: "get details of questions"
+  /users/{userid}/questions/{questionId}:
+    parameters:
+      - in: path
+        name: questionId
+        description: ID of question to get details for
+        required: true
+        type: integer
+      - in: path
+        name: userid
+        description: ID of userid
+        required: true
+        type: integer
     delete:
       tags: 
         - Questions
@@ -414,7 +395,6 @@ paths:
       responses:
         204:
           description: No Content
-
   /questions/{questionId}/answers:
     parameters:
       - in: path
@@ -437,6 +417,18 @@ paths:
           schema:
             $ref: '#/definitions/Answer'
           description: OK
+  /users/{userid}/questions/{questionId}/answers:
+    parameters:
+      - in: path
+        name: questionId
+        description: ID of question to get answers for
+        required: true
+        type: integer
+      - in: path
+        name: userid
+        description: ID of userid
+        required: true
+        type: integer
     post:
       tags: 
         - Answers
@@ -473,22 +465,24 @@ paths:
           description: "Answer found"
           schema:
             $ref: "#/definitions/Answer"
+  /user/{userid}/questions/{questionId}/answers/{answerId}:
+    parameters:
+      - in: path
+        name: questionId
+        description: ID of question to get answer for
+        required: true
+        type: integer
+      - in: path
+        name: answerId
+        description: ID of answer to get details for
+        required: true
+        type: integer
+      - in: path
+        name: userid
+        description: ID of userid
+        required: true
+        type: integer
 
-    put:
-      tags: 
-        - Answers
-      summary: Update an existing answer to a specific question
-      parameters:
-      - in: query
-        name: body
-        description: "update answer to that question"
-        type: string
-      
-      responses:
-        "200":
-          description: "Answer updated successfully"
-          schema:
-            $ref: "#/definitions/Answer"
     delete: 
       tags: 
         - Answers
@@ -499,11 +493,16 @@ paths:
           
           
 # comments api endpoints
-  /questions/{questionId}/comments:
+  /user/{userid}/questions/{questionId}/comments:
     parameters:
         - in: path
           name: questionId
           description: ID of the question to comment on
+          required: true
+          type: integer
+        - in: path
+          name: userid
+          description: ID of the user
           required: true
           type: integer
     post:
@@ -538,20 +537,24 @@ paths:
             description: OK
             schema:
               $ref: '#/definitions/Comment'
-      put:
-        tags:
-          - Comments
-        summary: Update a comment by comment ID
-        parameters:
-          - in: body
-            name: body
-            description: Comment object that needs to be updated
-            schema:
-              type: string
-        responses:
-          '200':
-            description: OK
-      delete:
+  /user/{userid}/questions/{questionId}/comments/{commentId}:
+    parameters:
+        - in: path
+          name: questionId
+          description: ID of the question to comment on
+          required: true
+          type: integer
+        - in: path
+          name: userid
+          description: ID of the user
+          required: true
+          type: integer
+        - in: path
+          name: commentId
+          description: ID of the user
+          required: true
+          type: integer
+    delete:
         tags:
           - Comments
         summary: Delete a comment by comment ID
@@ -601,7 +604,7 @@ paths:
     get:
       tags:
         - "Comments"
-      summary: "Get all comments on an answer"
+      summary: "Get a particular comment on an answer"
       produces:
         - "application/json"
       responses:
@@ -609,19 +612,28 @@ paths:
           schema:
             $ref: '#/definitions/Comment'
           description: OK
-    put:
-      tags:
-         - Comments
-      summary: Update a comment by comment ID
-      parameters: 
-        - in: query
-          name: body
-          type: string
-      responses:
-        '200':
-          schema:
-            $ref: '#/definitions/Comment'
-          description: OK
+  /user/{userid}//questions/{questionId}/answers/{answerId}/comments/{commentId}:
+    parameters:
+      - in: path
+        name: userid
+        description: ID of question to get answer for
+        required: true
+        type: integer
+      - in: path
+        name: questionId
+        description: ID of question to get answer for
+        required: true
+        type: integer
+      - in: path
+        name: answerId
+        description: ID of answer to get details for
+        required: true
+        type: integer
+      - in: path
+        name: commentId
+        description: ID of the comment to get details for
+        required: true
+        type: integer
     delete:
       tags:
         - Comments
@@ -693,4 +705,58 @@ paths:
               $ref: '#/definitions/User'
         400:
           description: Invalid input
+    
+# voting system
+  /users/{userid}/questions/{questionId}/vote/{vote_type}:
+    post:
+      tags:
+        - vote
+      parameters:
+        - in :  path
+          name: vote_type
+          description: vote a question
+          required: true
+          type: integer
+        - in: path
+          name: questionId
+          description: ID of question to get details for
+          required: true
+          type: integer
+        - in: path
+          name: userid
+          description: ID of userid
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successfully voted
+  /users/{userid}/questions/{questionId}/answers/{answerId}/vote/{vote_type}:
+    post:
+      tags:
+        - vote
+      parameters:
+        - in :  path
+          name: vote_type
+          description: vote a question
+          required: true
+          type: integer
+        - in: path
+          name: questionId
+          description: ID of question to get details for
+          required: true
+          type: integer
+        - in: path
+          name: answerId
+          description: ID of question to get details for
+          required: true
+          type: integer
+        - in: path
+          name: userid
+          description: ID of userid
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successfully voted
+      
     
