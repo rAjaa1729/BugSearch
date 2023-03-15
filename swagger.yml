@@ -142,6 +142,11 @@ paths:
         description: Sort the questions by upvotes
         type: boolean
         default: true
+      - in: query
+        name: sortByCreationDate
+        description: Sort the questions by upvotes
+        type: boolean
+        default: false
       responses:
         200:
           description: OK
@@ -330,6 +335,11 @@ paths:
         description: Sort the questions by upvotes
         type: boolean
         default: true
+      - in: query
+        name: sortByCreationDate
+        description: Sort the questions by upvotes
+        type: boolean
+        default: false
       responses:
         200:
           description: OK
@@ -412,6 +422,11 @@ paths:
         description: Sort the questions by upvotes
         type: boolean
         default: true
+      - in: query
+        name: sortByCreationDate
+        description: Sort the questions by upvotes
+        type: boolean
+        default: false
       responses:
         200:
           schema:
@@ -654,6 +669,11 @@ paths:
           description: Keyword to search for
           required: true
           type: string
+        - in: query
+          name: sortByUovote
+          description: Sort the questions by upvotes
+          type: boolean
+          default: false
       responses:
         200:
           description: Successful operation
@@ -696,6 +716,11 @@ paths:
           description: Keyword to search for
           required: true
           type: string
+        - in: query
+          name: sortByCreationDate
+          description: Sort the questions by upvotes
+          type: boolean
+          default: true
       responses:
         200:
           description: Successful operation
@@ -760,4 +785,3 @@ paths:
           description: Successfully voted
       
     
-
