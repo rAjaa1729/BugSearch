@@ -189,6 +189,13 @@
             "description": "Sort the questions by upvotes",
             "type": "boolean",
             "default": true
+          },
+          {
+            "in": "query",
+            "name": "sortByCreationDate",
+            "description": "Sort the questions by upvotes",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -466,6 +473,13 @@
             "description": "Sort the questions by upvotes",
             "type": "boolean",
             "default": true
+          },
+          {
+            "in": "query",
+            "name": "sortByCreationDate",
+            "description": "Sort the questions by upvotes",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -588,6 +602,13 @@
             "description": "Sort the questions by upvotes",
             "type": "boolean",
             "default": true
+          },
+          {
+            "in": "query",
+            "name": "sortByCreationDate",
+            "description": "Sort the questions by upvotes",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -941,6 +962,13 @@
             "description": "Keyword to search for",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortByUovote",
+            "description": "Sort the questions by upvotes",
+            "type": "boolean",
+            "default": false
           }
         ],
         "responses": {
@@ -1003,6 +1031,13 @@
             "description": "Keyword to search for",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortByCreationDate",
+            "description": "Sort the questions by upvotes",
+            "type": "boolean",
+            "default": true
           }
         ],
         "responses": {
