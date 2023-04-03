@@ -14,7 +14,7 @@ def get_db_connection():
 
 def get_post(post_id):
     con = get_db_connection()
-    conn = con.cursor()
+    conn = con.cursor(dictionary=True)
     conn.execute('SELECT * FROM posts WHERE id = %s',
                         (post_id,))
     post = conn.fetchone()
@@ -29,7 +29,7 @@ app.config['SECRET_KEY'] = 'your secret key'
 @app.route('/')
 def index():
     con = get_db_connection()
-    conn = con.cursor()
+    conn = con.cursor(dictionary=True)
     conn.execute('SELECT * FROM posts')
     posts = conn.fetchall()
     con.close()
@@ -50,7 +50,7 @@ def create():
             flash('Title is required!')
         else:
             con = get_db_connection()
-            conn = con.cursor()
+            conn = con.cursor(dictionary=True)
             conn.execute('INSERT INTO posts (title, content) VALUES (%s, %s)',
                             (title, content))
             con.commit()
@@ -68,7 +68,7 @@ def edit(id):
             flash('Title is required!')
         else:
             con = get_db_connection()
-            conn = con.cursor()
+            conn = con.cursor(dictionary=True)
             conn.execute('UPDATE posts SET title = %s, content = %s'
                         'WHERE id = %s',
                         (title, content, id))
@@ -81,9 +81,9 @@ def edit(id):
 def delete(id):
     post = get_post(id)
     con = get_db_connection()
-    conn = con.cursor()
+    conn = con.cursor(dictionary=True)
     conn.execute('DELETE FROM posts WHERE id = %s', (id,))
     con.commit()
     con.close()
-    flash('"{}" was successfully deleted!'.format(post[2]))
+    flash('"{}" was successfully deleted!'.format(post['title']))
     return redirect(url_for('index'))
