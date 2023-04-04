@@ -11,14 +11,15 @@ def get_db_connection():
     )
     return mydb
 
-def get_user(user_id, email_id):
+def get_user(user_id,email_id):
     conn = get_db_connection()
     cur = conn.cursor(dictionary=True)
-    if email_id:
-        cur.execute('SELECT * FROM Users WHERE email_id = %s',(email_id,))
     if user_id:
         cur.execute('SELECT * FROM Users WHERE user_id = %s',(user_id,))
+    if email_id:
+        cur.execute('SELECT * FROM Users WHERE email_id = %s',(email_id,))
     user = cur.fetchone()
+    cur.close()
     conn.close()
     return user 
 
@@ -61,4 +62,35 @@ def signup():
             return redirect(url_for('user_home', user_id=user_id))
     return render_template('signup.html')
         
+
+@app.route("/users/login",methods=["GET","POST"])
+def userlogin():
+    if (request.method=="POST"):
+        username=request.form["username"]
+        password=request.form["password"]
+        if not username:
+            flash("Username is required")
+        elif not password:
+            flash("Password is required")
+        else:
+            conn = get_db_connection()
+            cur = conn.cursor(dictionary=True)
+            cur.execute("SELECT user_id FROM Users WHERE username=%s AND passcode=%s", (username, password))
+            user = cur.fetchone()
+            conn.close()
+            cur.close()
+            if user is None:
+                flash("Incorrect password or username")
+                return render_template('login.html')
+            user_id = user[0]
+            return redirect(url_for('user_home', user_id=user_id))
+
+            
+
+                
+
+
+
+
+
 

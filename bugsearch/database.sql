@@ -5,7 +5,7 @@ USE BugSearch;
 CREATE TABLE Users
 (
     user_id INT NOT NULL AUTO_INCREMENT,
-    passcode INT NOT NULL,
+    passcode INT UNIQUE NOT NULL ,
     username VARCHAR(20) NOT NULL,
     email_id VARCHAR(30) NOT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
