@@ -66,8 +66,8 @@ CREATE TABLE Comments
     post_type ENUM('question', 'answer') NOT NULL,
     PRIMARY KEY (comment_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (post_id) REFERENCES Questions(question_id) ON DELETE CASCADE,
-    FOREIGN KEY (post_id) REFERENCES Answers(answer_id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES Questions(question_id), 
+    FOREIGN KEY (post_id) REFERENCES Answers(answer_id) 
 );
 
 CREATE TABLE Votes
@@ -79,59 +79,37 @@ CREATE TABLE Votes
     post_type ENUM('question', 'answer') NOT NULL,
     PRIMARY KEY (vote_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (post_id) REFERENCES Questions(question_id) ON DELETE CASCADE,
-    FOREIGN KEY (post_id) REFERENCES Answers(answer_id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES Questions(question_id) ,
+    FOREIGN KEY (post_id) REFERENCES Answers(answer_id) 
 );
 
 CREATE TABLE Tags
 (
     tag_id INT NOT NULL AUTO_INCREMENT,
     tag_name VARCHAR(20) NOT NULL,
-    about TEXT NOT NULL
+    about TEXT NOT NULL,
+    PRIMARY KEY(tag_id)
 );
 
 CREATE TABLE Follwertags
 (
     follower_id INT NOT NULL,
-    following_id INT NOT NULL
+    following_id INT NOT NULL,
+    PRIMARY KEY (follower_id,following_id)
 );
 
 CREATE TABLE Usertags
 (
     tag_id INT NOT NULL,
-    user_id INT NOT NULL
+    user_id INT NOT NULL,
+    PRIMARY KEY (user_id,tag_id)
 );
 
 CREATE TABLE Questiontags
 (
     tag_id INT NOT NULL,
-    question_id INT NOT NULL
+    question_id INT NOT NULL,
+    PRIMARY KEY (question_id,tag_id)
 );
 
 
-----
-CREATE TRIGGER update_badge
-BEFORE UPDATE ON Users 
-FOR EACH ROW
-BEGIN
-        IF NEW.reputation >= 20 AND NEW.reputation < 40 THEN
-            SET NEW.badge = 'Pupil';
-        ELSEIF NEW.reputation >= 40 AND NEW.reputation < 70 THEN
-            SET NEW.badge = 'Specialist';
-        ELSEIF NEW.reputation >= 70 AND NEW.reputation < 100 THEN
-            SET NEW.badge = 'Expert';
-        ELSEIF NEW.reputation >= 100 AND NEW.reputation < 120 THEN
-            SET NEW.badge = 'Candidate Master';
-        ELSEIF NEW.reputation >= 120 AND NEW.reputation < 130 THEN
-            SET NEW.badge = 'Master';
-        ELSEIF NEW.reputation >= 130 AND NEW.reputation < 140 THEN
-            SET NEW.badge = 'International Master';
-        ELSEIF NEW.reputation >= 140 AND NEW.reputation < 150 THEN
-            SET NEW.badge = 'Grandmaster';
-        ELSEIF NEW.reputation >= 150 AND NEW.reputation < 200 THEN
-            SET NEW.badge = 'International Grandmaster';
-        ELSEIF NEW.reputation >= 200 THEN
-            SET NEW.badge = 'Legendary Grandmaster';
-        END IF;
-    END IF;
-END;
