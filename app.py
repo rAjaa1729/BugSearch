@@ -28,7 +28,7 @@ app.config['SECRET_KEY'] = '142857'
 
 @app.route('/')
 def login_home():
-    return render_template('user_home.html')
+    return render_template('login_home.html')
 
 @app.route('/<int:user_id>/user_home')
 def user_home(user_id):
