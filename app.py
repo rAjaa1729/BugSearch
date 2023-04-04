@@ -9,24 +9,36 @@ def get_db_connection():
         password = "142857",
         database = "BugSearch"
     )
-    # conn.row_factory = sqlite3.Row
     return mydb
 
+def get_user(user_id, email_id):
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    if email_id:
+        cur.execute('SELECT * FROM Users WHERE email_id = %s',(email_id,))
+    if user_id:
+        cur.execute('SELECT * FROM Users WHERE user_id = %s',(user_id,))
+    user = cur.fetchone()
+    conn.close()
+    return user 
+
 app = Flask(__name__)
-app.config['SECRE_KEY'] = 'your secret key'
+app.config['SECRET_KEY'] = '142857'
 
 @app.route('/')
 def login_home():
     return render_template('login_home.html')
 
-@app.route('/user_home')
-def user_home():
+@app.route('/<int:user_id>/user_home')
+def user_home(user_id):
+    user = get_user(user_id, None)
     return render_template('user_home.html')
 
 @app.route('/signup', methods=('GET', 'POST'))
 def signup():
     if request.method == 'POST':
         email_id = request.form['email_id']
+        user = get_user(None,email_id)
         username = request.form['username']
         passcode = request.form['passcode']
         if not email_id:
@@ -35,14 +47,18 @@ def signup():
             flash('Username is required!')
         elif not passcode:
             flash('Please set password!')
+        elif user is not None :
+            flash('This email address is already registered!')
         else:
             conn = get_db_connection()
             cur = conn.cursor()
             cur.execute('INSERT INTO Users (email_id, username, passcode) VALUES (%s, %s, %s)',
                             (email_id, username, passcode))
+            cur.execute('SELECT LAST_INSERT_ID()')
+            user_id = cur.fetchone()[0]
             conn.commit()
             conn.close()
-            return redirect(url_for('user_home'))
+            return redirect(url_for('user_home', user_id=user_id))
     return render_template('signup.html')
         
 
