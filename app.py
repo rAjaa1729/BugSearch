@@ -53,9 +53,22 @@ def signup():
         else:
             conn = get_db_connection()
             cur = conn.cursor()
+            cur.execute("SELECT username FROM Users WHERE username=%s",(username,))
+            if cur.fetchone() is not None:
+                flash("Username already exist please enter new username")
+                conn.commit()
+                conn.close()
+                return render_template('signup.html',username=username,email_id=email_id,password=passcode)
+            cur.execute("SELECT username FROM Users WHERE username=%s AND email_id=%s",(username,email_id))
+            if cur.fetchone() is not None:  
+                flash("Account with this username and password already exist please login")
+                conn.commit()
+                conn.close()
+                return render_template('signup.html',username=username,email_id=email_id,password=passcode)
             cur.execute('INSERT INTO Users (email_id, username, passcode) VALUES (%s, %s, %s)',
                             (email_id, username, passcode))
             cur.execute('SELECT LAST_INSERT_ID()')
+            flash("Account created successfully")
             user_id = cur.fetchone()[0]
             conn.commit()
             conn.close()

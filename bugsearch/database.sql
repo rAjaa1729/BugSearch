@@ -5,8 +5,8 @@ USE BugSearch;
 CREATE TABLE Users
 (
     user_id INT NOT NULL AUTO_INCREMENT,
-    passcode INT UNIQUE NOT NULL ,
-    username VARCHAR(20) NOT NULL,
+    passcode INT NOT NULL ,
+    username VARCHAR(40) UNIQUE NOT NULL,
     email_id VARCHAR(30) NOT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     profile_image_url VARCHAR(30),
