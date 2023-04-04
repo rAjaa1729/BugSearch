@@ -1,3 +1,6 @@
+CREATE DATABASE BugSearch;
+USE BugSearch;
+
 -- TABLE FOR USER
 CREATE TABLE Users
 (
@@ -5,11 +8,11 @@ CREATE TABLE Users
     passcode INT NOT NULL,
     username VARCHAR(20) NOT NULL,
     email_id VARCHAR(30) NOT NULL,
-    creation_date DATE NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     profile_image_url VARCHAR(30),
     reputation INT NOT NULL DEFAULT 0,
     about TEXT,
-    badge VARCHAR(30) NOT NULL DEFAULT "newbie",
+    badge ENUM('bronze', 'silver', 'gold') NOT NULL DEFAULT 'bronze',
     nfollowers INT NOT NULL DEFAULT 0,
     nfollowing INT NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id)
@@ -22,7 +25,7 @@ CREATE TABLE Answers
     question_id INT NOT NULL,
     user_id INT NOT NULL,
     score INT DEFAULT 0,
-    creation_date DATE NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     comment_count INT NOT NULL DEFAULT 0,
     upvotes INT NOT NULL DEFAULT 0,
     downvotes INT NOT NULL DEFAULT 0,
@@ -39,7 +42,7 @@ CREATE TABLE Questions
     answer_id INT ,
     user_id INT NOT NULL,
     score INT NOT NULL DEFAULT 0,
-    creation_date DATE NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     comment_count INT NOT NULL DEFAULT 0,
     answer_count INT NOT NULL DEFAULT 0,
     upvotes INT NOT NULL DEFAULT 0,
@@ -56,7 +59,7 @@ CREATE TABLE Comments
 (
     comment_id INT NOT NULL AUTO_INCREMENT,
     body TEXT NOT NULL,
-    creation_date DATE NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id INT NOT NULL,
     post_id INT NOT NULL,
     post_type ENUM('question', 'answer') NOT NULL,
@@ -91,21 +94,27 @@ CREATE TABLE Follwertags
 (
     follower_id INT NOT NULL,
     following_id INT NOT NULL,
-    PRIMARY KEY (follower_id,following_id)
+    PRIMARY KEY (follower_id,following_id),
+    FOREIGN KEY (follower_id) REFERENCES Users(user_id),
+    FOREIGN KEY (following_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE Usertags
 (
     tag_id INT NOT NULL,
     user_id INT NOT NULL,
-    PRIMARY KEY (user_id,tag_id)
+    PRIMARY KEY (user_id,tag_id),
+    FOREIGN KEY (tag_id) REFERENCES Tags(tag_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE Questiontags
 (
     tag_id INT NOT NULL,
     question_id INT NOT NULL,
-    PRIMARY KEY (question_id,tag_id)
+    PRIMARY KEY (question_id,tag_id),
+    FOREIGN KEY (tag_id) REFERENCES Tags(tag_id),
+    FOREIGN KEY (question_id) REFERENCES Questions(question_id)
 );
 
 
