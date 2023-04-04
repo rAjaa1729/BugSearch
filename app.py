@@ -65,8 +65,7 @@ def signup():
                 conn.commit()
                 conn.close()
                 return render_template('signup.html',username=username,email_id=email_id,password=passcode)
-            cur.execute('INSERT INTO Users (email_id, username, passcode) VALUES (%s, %s, %s)',
-                            (email_id, username, passcode))
+            cur.execute('INSERT INTO Users (email_id, username, passcode) VALUES (%s, %s, %s)',(email_id, username, passcode))
             cur.execute('SELECT LAST_INSERT_ID()')
             flash("Account created successfully")
             user_id = cur.fetchone()[0]
