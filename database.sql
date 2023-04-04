@@ -1,6 +1,3 @@
-CREATE DATABASE BugSearch;
-USE BugSearch;
-
 -- TABLE FOR USER
 CREATE TABLE Users
 (
@@ -17,7 +14,6 @@ CREATE TABLE Users
     nfollowing INT NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id)
 );
-
 -- TABLE FOR Answers
 CREATE TABLE Answers
 (
