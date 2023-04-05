@@ -58,13 +58,15 @@ def signup():
                 flash("Username already exist please enter new username")
                 conn.commit()
                 conn.close()
-                return render_template('signup.html',username=username,email_id=email_id,password=passcode)
+                post={"username":username,"email_id":email_id,"password":passcode}
+                return render_template('signup.html',post)
             cur.execute("SELECT username FROM Users WHERE username=%s AND email_id=%s",(username,email_id))
             if cur.fetchone() is not None:  
                 flash("Account with this username and password already exist please login")
                 conn.commit()
                 conn.close()
-                return render_template('signup.html',username=username,email_id=email_id,password=passcode)
+                post={"username":username,"email_id":email_id,"password":passcode}
+                return render_template('signup.html',post)
             cur.execute('INSERT INTO Users (email_id, username, passcode) VALUES (%s, %s, %s)',(email_id, username, passcode))
             cur.execute('SELECT LAST_INSERT_ID()')
             flash("Account created successfully")
@@ -75,7 +77,7 @@ def signup():
     return render_template('signup.html')
         
 
-@app.route("/users/login",methods=["GET","POST"])
+@app.route("/login",methods=["GET","POST"])
 def userlogin():
     if (request.method=="POST"):
         username=request.form["username"]
@@ -106,3 +108,5 @@ def userlogin():
 
 
 
+if __name__=="__main__":
+    app.run(debug=True)
