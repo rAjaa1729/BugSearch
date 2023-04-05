@@ -110,15 +110,19 @@ def userlogin():
                 return render_template('login.html')
             user_id = user[0]
             return redirect(url_for('user_home', user_id=user_id))
+    return render_template("login.html")
 
             
+@app.route("/help",methods=["GET",])
+def help_page():
+    return render_template("help_page.html")
 
                 
 
-
-
-
-
-
 if __name__=="__main__":
     app.run(debug=True)
+
+
+
+
+
