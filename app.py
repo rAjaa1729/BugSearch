@@ -29,8 +29,14 @@ app.config['SECRET_KEY'] = '142857'
 @app.route('/')
 def login_home():
     return render_template('login_home.html')
+# in case userlogin
+@app.route('/users/')
 
-@app.route('/<int:user_id>/user_home')
+
+
+
+
+@app.route('users/<int:user_id>/user_home')
 def user_home(user_id):
     user = get_user(user_id, None)
     return render_template('user_home.html')
@@ -84,7 +90,7 @@ def signup():
                     user_id = cur.fetchone()[0]
                     conn.commit()
                     conn.close()
-                    return redirect(url_for('user_home', user_id=user_id))
+                    return redirect(url_for('complete-your-profile.html', user_id=user_id))
                 
     return render_template('signup.html', post=post)
  
