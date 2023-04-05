@@ -37,18 +37,31 @@ def user_home(user_id):
 
 @app.route('/signup', methods=('GET', 'POST'))
 def signup():
+    post = {"username": "", "email_id": "", "password": ""}
     if request.method == 'POST':
         email_id = request.form['email_id']
         user = get_user(None,email_id)
         username = request.form['username']
-        passcode = request.form['passcode']
+        passcode = request.form['password']
         if not email_id:
             flash('Email address is required!')
-        elif not username:
+            post["email_id"] = ""
+        else:
+            post["email_id"] = email_id
+
+        if not username:
             flash('Username is required!')
-        elif not passcode:
+            post["username"] = ""
+        else:
+            post["username"] = username
+
+        if not passcode:
             flash('Please set password!')
-        elif user is not None :
+            post["password"] = ""
+        else:
+            post["password"] = passcode
+
+        if user is not None :
             flash('This email address is already registered!')
         else:
             conn = get_db_connection()
@@ -58,24 +71,23 @@ def signup():
                 flash("Username already exist please enter new username")
                 conn.commit()
                 conn.close()
-                post={"username":username,"email_id":email_id,"password":passcode}
-                return render_template('signup.html',post)
-            cur.execute("SELECT username FROM Users WHERE username=%s AND email_id=%s",(username,email_id))
-            if cur.fetchone() is not None:  
-                flash("Account with this username and password already exist please login")
-                conn.commit()
-                conn.close()
-                post={"username":username,"email_id":email_id,"password":passcode}
-                return render_template('signup.html',post)
-            cur.execute('INSERT INTO Users (email_id, username, passcode) VALUES (%s, %s, %s)',(email_id, username, passcode))
-            cur.execute('SELECT LAST_INSERT_ID()')
-            flash("Account created successfully")
-            user_id = cur.fetchone()[0]
-            conn.commit()
-            conn.close()
-            return redirect(url_for('user_home', user_id=user_id))
-    return render_template('signup.html')
-        
+            else:
+                cur.execute("SELECT username FROM Users WHERE username=%s AND passcode=%s",(username,passcode))
+                if cur.fetchone() is not None:  
+                    flash("Account with this username and password already exist please login")
+                    conn.commit()
+                    conn.close()
+                else:
+                    cur.execute('INSERT INTO Users (email_id, username, passcode) VALUES (%s, %s, %s)',(email_id, username, passcode))
+                    cur.execute('SELECT LAST_INSERT_ID()')
+                    flash("Account created successfully")
+                    user_id = cur.fetchone()[0]
+                    conn.commit()
+                    conn.close()
+                    return redirect(url_for('user_home', user_id=user_id))
+                
+    return render_template('signup.html', post=post)
+ 
 
 @app.route("/login",methods=["GET","POST"])
 def userlogin():
@@ -84,7 +96,7 @@ def userlogin():
         password=request.form["password"]
         if not username:
             flash("Username is required")
-        elif not password:
+        if not password:
             flash("Password is required")
         else:
             conn = get_db_connection()
