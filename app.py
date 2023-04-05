@@ -117,7 +117,9 @@ def userlogin():
 def help_page():
     return render_template("help_page.html")
 
-                
+@app.route("/forgot_password",methods=["GET"])
+def forgot_password():  
+    return render_template('forgot_password.html')
 
 if __name__=="__main__":
     app.run(debug=True)
