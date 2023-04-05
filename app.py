@@ -6,7 +6,7 @@ def get_db_connection():
     mydb = mysql.connector.connect(
         host = "localhost",
         user = "root",
-        password = "142857",
+        password = "sql@Prism1920",
         database = "BugSearch"
     )
     return mydb
@@ -26,17 +26,17 @@ def get_user(user_id,email_id):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '142857'
 
-@app.route('/')
+@app.route('/',methods=["GET",])
 def login_home():
     return render_template('login_home.html')
 # in case userlogin
-@app.route('/users/')
+# @app.route('/users/')
 
 
 
 
 
-@app.route('users/<int:user_id>/user_home')
+@app.route('/users/<int:user_id>/user_home')
 def user_home(user_id):
     user = get_user(user_id, None)
     return render_template('user_home.html')
